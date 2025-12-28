@@ -3,10 +3,10 @@ package one.moriLib;
 import one.moriLib.api.MoriLibAPI;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class MoriLibImpl extends JavaPlugin implements MoriLibAPI {
+public class MoriLibImpl implements MoriLibAPI {
     private static JavaPlugin plugin;
 
-    MoriLibImpl(JavaPlugin plugin) {
+    public MoriLibImpl(JavaPlugin plugin) {
         MoriLibImpl.plugin = plugin;
     }
 

@@ -29,6 +29,7 @@ public final class MoriLib extends JavaPlugin {
         getLogger().info("Creating Patcher");
         patcher = new Patcher(this);
 
+        getLogger().info("Starting API handler");
         api = new MoriLibImpl(this);
 
         getLogger().info("Creating NoteBlock Patcher");
