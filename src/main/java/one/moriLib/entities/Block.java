@@ -6,19 +6,16 @@ import org.bukkit.Note;
 public class Block {
     private final String name;
     private final String DisplayName;
-    private final String path;
     private final String modId;
     private final int id;
     private Note note;
     private Instrument instrument;
     private boolean powered;
 
-    public Block(String name, int id) {
-        String[] nameSplit = name.split("/");
-        this.DisplayName = nameSplit[nameSplit.length - 1].replace(".json", "").replace("_", " ");
-        this.name = nameSplit[nameSplit.length - 1].replace(".json", "");
-        this.modId = nameSplit[1];
-        this.path = "PatchedResourcePack/" + name;
+    public Block(String name, String modId, int id) {
+        this.DisplayName = name.replace("_", " ");
+        this.name = name;
+        this.modId = modId;
         this.id = id;
         note = null;
         instrument = null;
@@ -33,10 +30,6 @@ public class Block {
     }
     public String getModId() {
         return modId;
-    }
-
-    public String getPath() {
-        return path;
     }
 
     public int getId() {

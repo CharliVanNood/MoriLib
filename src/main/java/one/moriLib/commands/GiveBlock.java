@@ -3,6 +3,7 @@ package one.moriLib.commands;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import one.moriLib.entities.Block;
+import one.moriLib.patcher.Patcher;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,10 +15,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.List;
 
 public class GiveBlock implements CommandExecutor {
-    private final List<Block> blocks;
+    private final Patcher patcher;
 
-    public GiveBlock(List<Block> blocks) {
-        this.blocks = blocks;
+    public GiveBlock(Patcher patcher) {
+        this.patcher = patcher;
     }
 
     @Override
@@ -34,7 +35,7 @@ public class GiveBlock implements CommandExecutor {
 
         int customModelData = -1;
         String blockName = args[0];
-        for (Block block : blocks) {
+        for (Block block : patcher.getBlocks()) {
             if (block.getNameDefault().equalsIgnoreCase(args[0])) {
                 customModelData = block.getId();
                 blockName = block.getName();

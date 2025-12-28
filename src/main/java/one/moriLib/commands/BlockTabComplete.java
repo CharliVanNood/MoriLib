@@ -1,6 +1,7 @@
 package one.moriLib.commands;
 
 import one.moriLib.entities.Block;
+import one.moriLib.patcher.Patcher;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -11,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BlockTabComplete implements TabCompleter {
-    private final List<Block> blocks;
+    private final Patcher patcher;
 
-    public BlockTabComplete(List<Block> blocks) {
-        this.blocks = blocks;
+    public BlockTabComplete(Patcher patcher) {
+        this.patcher = patcher;
     }
 
     @Override
@@ -27,7 +28,7 @@ public class BlockTabComplete implements TabCompleter {
 
         if (args.length == 1) {
             String current = args[0].toLowerCase();
-            for (Block block : blocks) {
+            for (Block block : patcher.getBlocks()) {
                 if (block.getNameDefault().startsWith(current)) {
                     suggestions.add(block.getNameDefault());
                 }

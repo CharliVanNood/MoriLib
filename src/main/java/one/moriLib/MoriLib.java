@@ -19,6 +19,7 @@ import java.io.IOException;
 public final class MoriLib extends JavaPlugin {
     private ResourcePackServer resourcePackServer;
     private Patcher patcher;
+    private NoteBlockPatcher noteBlockPatcher;
     private static MoriLibAPI api;
 
     @Override
@@ -28,12 +29,13 @@ public final class MoriLib extends JavaPlugin {
 
         getLogger().info("Creating Patcher");
         patcher = new Patcher(this);
+        getLogger().info("Creating NoteBlock Patcher");
+        noteBlockPatcher = new NoteBlockPatcher(this);
 
         getLogger().info("Starting API handler");
-        api = new MoriLibImpl(this);
+        api = new MoriLibImpl(this, patcher, noteBlockPatcher, resourcePack);
 
-        getLogger().info("Creating NoteBlock Patcher");
-        NoteBlockPatcher noteBlockPatcher = new NoteBlockPatcher(this);
+        getLogger().info("Flushing init state");
         noteBlockPatcher.patchNoteBlock(resourcePack.getFinalDir(), patcher.getBlocks());
         noteBlockPatcher.generateNoteBlockItemJson(resourcePack.getFinalDir(), patcher.getBlocks());
         resourcePack.buildPatchedResourcePack();
@@ -45,12 +47,12 @@ public final class MoriLib extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new JoinEvent(this), this);
         getLogger().info("Resource pack join handler enabled.");
 
-        getServer().getPluginManager().registerEvents(new OnPlace(patcher.getBlocks()), this);
-        getServer().getPluginManager().registerEvents(new OnInteract(this, patcher.getBlocks()), this);
+        getServer().getPluginManager().registerEvents(new OnPlace(patcher), this);
+        getServer().getPluginManager().registerEvents(new OnInteract(this, patcher), this);
         getLogger().info("Events enabled.");
 
-        this.getCommand("giveBlock").setExecutor(new GiveBlock(patcher.getBlocks()));
-        this.getCommand("giveBlock").setTabCompleter(new BlockTabComplete(patcher.getBlocks()));
+        this.getCommand("giveBlock").setExecutor(new GiveBlock(patcher));
+        this.getCommand("giveBlock").setTabCompleter(new BlockTabComplete(patcher));
         getLogger().info("Commands enabled.");
 
         getLogger().info("MoriLib has been enabled!");

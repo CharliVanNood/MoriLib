@@ -1,5 +1,6 @@
 package one.moriLib.events;
 
+import one.moriLib.patcher.Patcher;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Instrument;
@@ -20,11 +21,11 @@ import java.util.List;
 
 public class OnInteract implements Listener {
     private final JavaPlugin plugin;
-    private final List<one.moriLib.entities.Block> blocks;
+    private final Patcher patcher;
 
-    public OnInteract(JavaPlugin plugin, List<one.moriLib.entities.Block> blocks) {
+    public OnInteract(JavaPlugin plugin, Patcher patcher) {
         this.plugin = plugin;
-        this.blocks = blocks;
+        this.patcher = patcher;
     }
 
     @EventHandler
@@ -63,7 +64,7 @@ public class OnInteract implements Listener {
 
                     int customModelData = meta.getCustomModelData();
 
-                    for (one.moriLib.entities.Block b : blocks) {
+                    for (one.moriLib.entities.Block b : patcher.getBlocks()) {
                         if (b.getId() == customModelData) {
                             BlockData data = targetBlock.getBlockData();
 

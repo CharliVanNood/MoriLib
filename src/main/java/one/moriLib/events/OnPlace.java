@@ -1,6 +1,7 @@
 package one.moriLib.events;
 
 import one.moriLib.entities.Block;
+import one.moriLib.patcher.Patcher;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.NoteBlock;
@@ -13,10 +14,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.List;
 
 public class OnPlace implements Listener {
-    private static List<Block> blocks;
+    private final Patcher patcher;
 
-    public OnPlace(List<Block> blocks_in) {
-        blocks = blocks_in;
+    public OnPlace(Patcher patcher) {
+        this.patcher = patcher;
     }
 
     @EventHandler
@@ -33,7 +34,7 @@ public class OnPlace implements Listener {
         org.bukkit.block.Block block = event.getBlockPlaced();
         if (block.getType() != Material.NOTE_BLOCK) return;
 
-        for (Block b : blocks) {
+        for (Block b : patcher.getBlocks()) {
             if (b.getId() == customModelData) {
                 BlockData data = block.getBlockData();
 

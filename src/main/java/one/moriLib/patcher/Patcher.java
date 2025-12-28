@@ -20,8 +20,8 @@ public class Patcher {
         return instance;
     }
 
-    public void addBlockReference(String name) {
-        blocks.add(new Block(name, blocks.size() + 1));
+    public void addBlockReference(String name, String modId) {
+        blocks.add(new Block(name, modId, blocks.size() + 1));
         plugin.getLogger().info("Added block " + name);
     }
 
