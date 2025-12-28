@@ -1,5 +1,8 @@
 package one.moriLib.api;
 
+/**
+ * Public API for interacting with MoriLib.
+ */
 public interface MoriLibAPI {
     /**
      * Registers a new block.
