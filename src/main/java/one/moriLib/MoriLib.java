@@ -1,5 +1,6 @@
 package one.moriLib;
 
+import one.moriLib.api.MoriLibAPI;
 import one.moriLib.commands.BlockTabComplete;
 import one.moriLib.commands.GiveBlock;
 import one.moriLib.events.JoinEvent;
@@ -18,6 +19,7 @@ import java.io.IOException;
 public final class MoriLib extends JavaPlugin {
     private ResourcePackServer resourcePackServer;
     private Patcher patcher;
+    private static MoriLibAPI api;
 
     @Override
     public void onEnable() {
@@ -26,6 +28,8 @@ public final class MoriLib extends JavaPlugin {
 
         getLogger().info("Creating Patcher");
         patcher = new Patcher(this);
+
+        api = new MoriLibImpl(this);
 
         getLogger().info("Creating NoteBlock Patcher");
         NoteBlockPatcher noteBlockPatcher = new NoteBlockPatcher(this);
@@ -49,6 +53,10 @@ public final class MoriLib extends JavaPlugin {
         getLogger().info("Commands enabled.");
 
         getLogger().info("MoriLib has been enabled!");
+    }
+
+    public static MoriLibAPI getAPI() {
+        return api;
     }
 
     @Override
