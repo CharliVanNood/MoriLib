@@ -10,10 +10,13 @@ import java.util.Objects;
 
 public class ResourcePackServer extends NanoHTTPD {
     private final JavaPlugin plugin;
+    private String zipOutDirectory;
 
-    public ResourcePackServer(JavaPlugin plugin) {
+    public ResourcePackServer(JavaPlugin plugin, File zipOut) {
         super(8080);
         this.plugin = plugin;
+        zipOutDirectory = zipOut.getPath();
+        plugin.getLogger().info("zipOutDirectory: " + zipOutDirectory);
     }
 
     @Override
@@ -21,7 +24,7 @@ public class ResourcePackServer extends NanoHTTPD {
         String uri = session.getUri();
 
         if (Objects.equals(uri, "/resourcepack")) {
-            File zipFile = new File("plugins/acropora/PatchedResourcePack.zip");
+            File zipFile = new File(zipOutDirectory + ".zip");
 
             if (zipFile.exists()) {
                 try {

@@ -8,7 +8,9 @@ import java.io.IOException;
 
 public class ResourcePack {
     private static JavaPlugin plugin;
+    private File dataFolder;
     private File finalDir;
+    private File zipOut;
 
     public ResourcePack(JavaPlugin plugin) {
         ResourcePack.plugin = plugin;
@@ -18,8 +20,12 @@ public class ResourcePack {
         return finalDir;
     }
 
+    public File getZipOut() {
+        return zipOut;
+    }
+
     public void createPatchedResourcePack() {
-        File dataFolder = plugin.getDataFolder();
+        dataFolder = plugin.getDataFolder();
         if (!dataFolder.exists()) {
             boolean can_create = dataFolder.mkdirs();
             if (!can_create) plugin.getLogger().severe("Failed to create data folder");
@@ -37,6 +43,17 @@ public class ResourcePack {
             FileUtils.copyDirectory(unzipDir, finalDir);
         } catch (IOException e) {
             plugin.getLogger().severe("Failed to copy resource pack to " + finalDir.getAbsolutePath());
+            e.printStackTrace();
+        }
+    }
+
+    public void buildPatchedResourcePack() {
+        zipOut = new File(dataFolder, "PatchedResourcePack.zip");
+        try {
+            FileUtils.zipDirectoryContents(finalDir, zipOut);
+            plugin.getLogger().info("Repacked PatchedResourcePack into " + zipOut.getAbsolutePath());
+        } catch (IOException e) {
+            plugin.getLogger().severe("Failed to zip PatchedResourcePack!");
             e.printStackTrace();
         }
     }

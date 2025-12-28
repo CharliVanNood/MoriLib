@@ -1,0 +1,8 @@
+name: MoriLib
+version: '1.0'
+main: one.moriLib.MoriLib
+api-version: '1.21'
+commands:
+  giveBlock:
+    description: Gives a custom block
+    usage: /giveBlock name

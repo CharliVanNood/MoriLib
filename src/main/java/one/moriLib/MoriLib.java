@@ -1,5 +1,10 @@
 package one.moriLib;
 
+import one.moriLib.commands.BlockTabComplete;
+import one.moriLib.commands.GiveBlock;
+import one.moriLib.events.JoinEvent;
+import one.moriLib.events.OnInteract;
+import one.moriLib.events.OnPlace;
 import one.moriLib.files.FileUtils;
 import one.moriLib.patcher.NoteBlockPatcher;
 import one.moriLib.patcher.Patcher;
@@ -11,7 +16,7 @@ import java.io.File;
 import java.io.IOException;
 
 public final class MoriLib extends JavaPlugin {
-    private ResourcePackServer server;
+    private ResourcePackServer resourcePackServer;
     private Patcher patcher;
 
     @Override
@@ -26,12 +31,32 @@ public final class MoriLib extends JavaPlugin {
         NoteBlockPatcher noteBlockPatcher = new NoteBlockPatcher(this);
         noteBlockPatcher.patchNoteBlock(resourcePack.getFinalDir(), patcher.getBlocks());
         noteBlockPatcher.generateNoteBlockItemJson(resourcePack.getFinalDir(), patcher.getBlocks());
+        resourcePack.buildPatchedResourcePack();
+        getLogger().info("Resource Pack has been patched");
+
+        resourcePackServer = new ResourcePackServer(this, resourcePack.getFinalDir());
+        resourcePackServer.startServer();
+
+        getServer().getPluginManager().registerEvents(new JoinEvent(this), this);
+        getLogger().info("Resource pack join handler enabled.");
+
+        getServer().getPluginManager().registerEvents(new OnPlace(patcher.getBlocks()), this);
+        getServer().getPluginManager().registerEvents(new OnInteract(this, patcher.getBlocks()), this);
+        getLogger().info("Events enabled.");
+
+        this.getCommand("giveBlock").setExecutor(new GiveBlock(patcher.getBlocks()));
+        this.getCommand("giveBlock").setTabCompleter(new BlockTabComplete(patcher.getBlocks()));
+        getLogger().info("Commands enabled.");
 
         getLogger().info("MoriLib has been enabled!");
     }
 
     @Override
     public void onDisable() {
+        if (resourcePackServer != null) {
+            resourcePackServer.stop();
+            getLogger().info("ResourcePackServer stopped.");
+        }
         getLogger().info("MoriLib is disabled!");
     }
 }
