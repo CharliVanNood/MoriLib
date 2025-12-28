@@ -18,8 +18,6 @@ import java.io.IOException;
 
 public final class MoriLib extends JavaPlugin {
     private ResourcePackServer resourcePackServer;
-    private Patcher patcher;
-    private NoteBlockPatcher noteBlockPatcher;
     private static MoriLibAPI api;
 
     @Override
@@ -28,9 +26,9 @@ public final class MoriLib extends JavaPlugin {
         resourcePack.createPatchedResourcePack();
 
         getLogger().info("Creating Patcher");
-        patcher = new Patcher(this);
+        Patcher patcher = new Patcher(this);
         getLogger().info("Creating NoteBlock Patcher");
-        noteBlockPatcher = new NoteBlockPatcher(this);
+        NoteBlockPatcher noteBlockPatcher = new NoteBlockPatcher(this);
 
         getLogger().info("Starting API handler");
         api = new MoriLibImpl(this, patcher, noteBlockPatcher, resourcePack);
